@@ -1123,6 +1123,9 @@
     .product.product--wide{ grid-template-columns: 220px 1fr; }
   }
   @media (max-width: 980px){
+    /* Remove desktop chrome that doesn't fit mobile viewport */
+    .page{ box-shadow: none; }
+
     .top-header-row{
       grid-template-columns: 1fr;
       justify-items: center;
@@ -1135,39 +1138,104 @@
     .logo-wrap{ order: 2; }
     .header-side-right{ order: 3; }
     .tagline{ text-align:center; }
+
     .sobre-grid{ grid-template-columns: 1fr; }
-    .product{
+
+    /* Kill all tilt/rotation on products so the rotated bounding box
+       doesn't push them out of frame. Use !important because the
+       per-child rules have higher specificity. */
+    .product,
+    .product:nth-child(1),
+    .product:nth-child(2),
+    .product:nth-child(3),
+    .product:nth-child(4),
+    .product:nth-child(5),
+    .product:nth-child(6){
+      transform: none !important;
       grid-template-columns: 1fr;
-      transform: none;
     }
     .product.product--wide{
       grid-template-columns: 1fr;
     }
+    /* Cover frames stay slightly tilted but smaller so they don't
+       push outside the card width. */
+    .product:nth-child(odd) .product-cover-frame,
+    .product:nth-child(even) .product-cover-frame{
+      transform: none;
+    }
     .product-cover-frame{ max-width: 240px; margin: 0 auto; }
     .product.product--wide .product-cover-frame{ max-width: 300px; }
+
     .events-grid, .contato-grid{ grid-template-columns: 1fr; }
-    nav.main-nav{ padding: 0 10px; overflow-x: auto; }
-    nav.main-nav ul{ min-width: max-content; }
-    nav.main-nav a{ padding: 14px 18px; font-size: 13px; }
-    .hero{ padding: 20px; }
-    .top-header{ padding: 20px 24px 28px; }
-    .sobre, .quadrinhos{ padding-left: 20px; padding-right: 20px; }
-    .product-list{ padding: 0 20px; }
-    .section-head{ padding: 0 20px; flex-direction: column; align-items: flex-start; gap: 14px; }
-    .eventos, .contato{ padding: 36px 20px; }
-    .speech-bubble{ font-size: 24px; }
+
+    /* Mobile nav: smaller items so they all fit on 1 row */
+    nav.main-nav{ padding: 0; overflow: hidden; }
+    nav.main-nav ul{ width: 100%; }
+    nav.main-nav li{ flex: 1; }
+    nav.main-nav a{
+      padding: 12px 4px;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+    nav.main-nav a.active::after{ display: none; }
+
+    .hero{ padding: 16px; }
+    .top-header{ padding: 20px 16px 28px; }
+    .sobre, .quadrinhos{ padding-left: 14px; padding-right: 14px; }
+    .product-list{ padding: 0 14px; gap: 22px; }
+    .section-head{
+      padding: 0 14px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    /* Smaller section heads so they don't run wide on phones */
+    .section-head h2{
+      font-size: clamp(40px, 12vw, 64px);
+      padding: 10px 18px 6px;
+      transform: rotate(-1deg);
+    }
+    .eventos, .contato{ padding: 36px 14px; }
+    .speech-bubble{ font-size: 22px; padding: 22px 24px; }
+    /* Sobre card padding tighter */
+    .sobre-card{ padding: 26px 22px; }
+    .sobre-card h1{ font-size: clamp(42px, 12vw, 64px); }
+    /* Stats panel font tighter */
+    .stat-panel .num{ font-size: 38px; }
+    .stat-panel{ padding: 14px 16px; }
+    /* Big shout smaller */
+    .events-cta .big-shout{ padding: 24px 20px; }
+
     footer{ padding: 20px; flex-direction: column; text-align: center; }
   }
   @media (max-width: 560px){
-    .hero-corner-burst{ width: 90px; height: 90px; }
-    .hero-caption{ font-size: 12px; padding: 4px 10px; top: 14px; left: 14px; }
-    .burst{ --size: 130px; }
-    .burst span{ font-size: 11px; }
-    .burst span small{ font-size: 16px; }
-    .product{ padding: 18px; }
-    .speech-bubble{ font-size: 20px; padding: 22px 24px; }
-    .juntos-burst{ width: 110px; height: 110px; bottom: -16px; right: -16px; }
-    .events-list, .contact-card, .form-card{ padding: 22px; }
+    .hero-corner-burst{ width: 84px; height: 84px; top: 12px; right: 12px; }
+    .hero-corner-burst span{ font-size: 9px; padding: 0 14px; }
+    .hero-caption{ font-size: 11px; padding: 4px 10px; top: 12px; left: 12px; }
+    .burst{ --size: 120px; }
+    .burst span{ font-size: 10px; padding: 0 16px; }
+    .burst span small{ font-size: 14px; }
+    .logo-wrap img{ width: clamp(150px, 50vw, 200px); }
+
+    .product{ padding: 16px; gap: 14px; }
+    .product-cover-frame{ max-width: 200px; }
+    .product.product--wide .product-cover-frame{ max-width: 240px; }
+    .product-title{ font-size: clamp(20px, 5.5vw, 26px); }
+    .product.product--wide .product-title{ font-size: clamp(26px, 7vw, 36px); }
+
+    .speech-bubble{ font-size: 18px; padding: 20px 22px; }
+    .juntos-burst{ width: 100px; height: 100px; bottom: -14px; right: -14px; }
+    .juntos-burst span{ font-size: 10px; padding: 0 16px; }
+    .events-list, .contact-card, .form-card{ padding: 20px; }
+    .events-list li{ font-size: 17px; }
+    .events-list strong{ font-size: 14px; }
+    .contact-card h3, .form-card h3{ font-size: 28px; }
+
+    /* Teaser card a bit smaller */
+    .product.product--teaser{ padding: 22px; min-height: 220px; }
+    .teaser-q{ font-size: 64px; }
+    .teaser-label{ font-size: 22px; }
   }
 </style>
 </head>
